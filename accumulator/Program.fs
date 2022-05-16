@@ -48,9 +48,13 @@ let format (request : HttpRequest) =
 
 /// ルーティング
 let router =
-    // {hostname:port}/accumulater に対する POST を処理する
-    POST >=> path "/accumulate"
-         >=> request (fun r -> System.Console.WriteLine(format r); OK (format r))
+    choose [
+        // {hostname:port}/accumulater に対する POST を処理する
+        POST >=> path "/accumulate/"
+             >=> request (fun r -> System.Console.WriteLine(format r); OK (format r))
+        PUT  >=> path "/accumulate/"
+             >=> request (fun r -> System.Console.WriteLine(format r); OK (format r))
+    ]
 
 /// main
 [<EntryPoint>]
@@ -58,7 +62,7 @@ let main argv =
     // 引数をパースする
     let result = Parser.Default.ParseArguments<Options>(argv)
     match result with
-    | :? Parsed<Options> as parsed -> Console.WriteLine(parsed.Value.ToString())
+    | :? Parsed<Options> as parsed -> ()
     |  _  -> failwith "Invalid Arguments"
  
     // コマンドラインオプションを設定する 
