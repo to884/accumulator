@@ -13,7 +13,7 @@ open CommandLine
 /// コマンドラインオプション
 type Options = {
     [<Option('p', "port", HelpText = "Port number")>] portNumber : int16 option
-    [<Option('h', "host", HelpText = "Host name")>] hostName : string option
+    [<Option('h', "host", HelpText = "Host address or name")>] hostName : string option
 }
 
 /// タイムスタンプを取得する
