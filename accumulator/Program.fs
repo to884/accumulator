@@ -102,7 +102,7 @@ let main argv =
             bindings = [ HttpBinding.createSimple HTTP hostAddress portNumber ]
     }
    
-    // Suave を起動する 
+    // Suave を非同期で起動する 
     let listening, server = startWebServerAsync config router
     Async.Start(server, cts.Token)
     
