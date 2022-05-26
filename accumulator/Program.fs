@@ -11,7 +11,7 @@ open CommandLine
 
 /// コマンドラインオプション
 type Options = {
-    [<Option('p', "port", HelpText = "Port number")>] portNumber : int16 option
+    [<Option('p', "port", HelpText = "Port number")>] portNumber : uint16 option
     [<Option('h', "host", HelpText = "Host address or name")>] hostAddress : string option
 }
 
@@ -60,16 +60,22 @@ let router =
     choose [
         // {hostname:port}/accumulate/ に対する POST を処理する
         // 標準出力に POST の内容を出力し、レスポンスに同様の内容を返す
-        POST  >=> path "/accumulate/"
-              >=> request (fun r -> System.Console.WriteLine(format r); OK (format r))
+        POST  >=> choose [
+                    path "/accumulate" 
+                    >=> request (fun r -> System.Console.WriteLine(format r); CREATED (format r))
+                    ]
         // {hostname:port}/accumulate/ に対する PUT を処理する
         // 標準出力に PUT の内容を出力し、レスポンスに同様の内容を返す
-        PUT   >=> path "/accumulate/"
-              >=> request (fun r -> System.Console.WriteLine(format r); OK (format r))
+        PUT   >=> choose [
+                    path "/accumulate"
+                    >=> request (fun r -> System.Console.WriteLine(format r); CREATED (format r))
+                    ]
         // {hostname:port}/accumulate/ に対する PATCH を処理する
         // 標準出力に PATCH の内容を出力し、レスポンスに同様の内容を返す
-        PATCH >=> path "/accumulate/"
-              >=> request (fun r -> System.Console.WriteLine(format r); OK (format r))
+        PATCH >=> choose [
+                    path "/accumulate"
+                    >=> request (fun r -> System.Console.WriteLine(format r); CREATED (format r))
+                    ]
     ]
 
 /// main
